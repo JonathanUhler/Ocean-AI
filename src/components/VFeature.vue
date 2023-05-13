@@ -3,20 +3,20 @@
 		<div id="Pitch"><b>{{mp}}</b></div>
 		<div id="SubPitch">{{sp}}</div>
 		<img :src="require(`../assets/${i}`)" />
-		<VButton x="29%" y="79%" c="blue" t="Learn More" s="smallmedium" L="learnmore"></VButton>
+		<VButton x="29%" y="79%" c="blue" t="Learn More" s="smallmedium" L="/"></VButton>
 	</div>
 	<div v-else :style="css" id="Feature">
 		<div id="PitchR"><b>{{mp}}</b></div>
 		<div id="SubPitchR">{{sp}}</div>
 		<img id="imgR" :src="require(`../assets/${i}`)" />
-		<VButton x="59%" y="79%" c="blue" t="Learn More" s="smallmedium" L="learnmore"></VButton>
+		<VButton x="59%" y="79%" c="blue" t="Learn More" s="smallmedium" L="/"></VButton>
 	</div>
 </template>
 <script>
 import VButton from "./VButton.vue";
 export default{
 	
-	props:["y","c","mp","sp","i","side","iw","ih","iy"],
+	props:["y","c","mp","sp","i","side","iw","ih","iy","ix"],
 	data(){
 		return{
 			sid:""
@@ -30,6 +30,7 @@ export default{
 				"--iw":this.iw,
 				"--ih":this.ih,
 				"--iy":this.iy,
+				"--ix":this.ix,
 			}
 		}
 	},
@@ -125,10 +126,11 @@ img{
 	width:var(--iw);
 	height:var(--ih);
 	position:absolute;
-	left:19%;
+	left:var(--ix);
 	top:var(--iy);
 	border-radius:10px;
 	filter:saturate(120%);
+	
 }
 
 </style>

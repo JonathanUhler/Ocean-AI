@@ -18,8 +18,8 @@ export default{
 		return{
 			angle:"",
 			distance:"",
-			left:"",
-			top:"",
+			left:"0",
+			top:"0",
 		}
 	},
 	computed:{
@@ -28,11 +28,11 @@ export default{
 				"--x":(parseInt(this.x)-160)+"px",
 				"--y":(parseInt(this.y)-30)+"px",
 				"--s":this.s,
-				"--x7":this.x7,
-				"--y7":this.y7,
+				"--x7":(parseInt(this.x7)-160)+"px",
+				"--y7":(parseInt(this.y7)-30)+"px",
 				"--ta":this.angle,
 				"--tw":this.distance,
-				"--left":this.left+"px",
+				"--left":(parseInt(this.left)+180)+"px",
 				"--top":this.top+"px",
 			}
 		}
@@ -60,6 +60,14 @@ export default{
 					elements[i].classList.remove("invis");
 				}else{
 					elements[i].classList.add("invis");
+				}
+			}
+			var elements=document.getElementsByClassName("outer");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					elements[i].style.backgroundColor="rgb(61,131,245)";
+				}else{
+					elements[i].style.backgroundColor="rgb(240, 67, 67)";
 				}
 			}
 			document.getElementById("infofake").style.display="none";
@@ -138,7 +146,13 @@ export default{
 		},
 		countDown(){
 				this.left=localStorage.getItem("left");
+				if(this.left==null)this.left="0";
 				this.top=localStorage.getItem("top");
+				if(this.top==null)this.top="0";
+				if(localStorage.getItem("Search ID:")==this.id){
+					this.reveal();
+					localStorage.setItem("Search ID:","0");
+				}
 		}
 	}
 }
@@ -160,12 +174,13 @@ export default{
 }
 .predict7{
 	animation-name:move7;
-	animation-duration:3s;
+	animation-duration:2s;
 	animation-fill-mode:forwards;
+	animation-timing-function:ease-out;
 }
 @keyframes move7{
-	0%{left:calc(var(--x) + var(--s) / 2 + var(--left));top:calc(var(--y) + var(--s) / 2 + var(--top));}
-	100%{left:calc(var(--x7) + var(--s) / 2 + var(--left));top:calc(var(--y7) + var(--s) / 2 + var(--top));}
+	0%{left:calc((var(--x)) + ((var(--s) / 2)) + (var(--left)));top:calc((var(--y)) + (var(--s) / 2) + (var(--top)));}
+	100%{left:calc((var(--x7)) + (var(--s) / 2) + (var(--left)));top:calc((var(--y7)) + (var(--s) / 2) + (var(--top)));}
 }
 .info{
 	background-color:rgb(30,30,30);
