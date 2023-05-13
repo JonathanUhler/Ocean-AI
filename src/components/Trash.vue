@@ -1,30 +1,49 @@
 <template>
-	<!--<div id="back" v-on:click="hide"></div>-->
-	<div v-on:click="reveal" id="outer" :style="css"></div>
+	<!--<div class="trail invis" :style="css"></div>-->
+	<div v-on:click="reveal" class="outer" :style="css"></div>
 	
 	<div class="info invis" >
 		<div id="id"><b>ID #{{id}}</b></div>
 		<div id="num"><b>{{n}}</b></div>
 		<div id="numlabel">pieces of trash</div>
 		<div id="location">📍 {{lat}} {{log}} 📍</div>
-		<button id="current"><b>Current</b></button>
-		<button id="week"><b>7 Days</b></button>
+		<button  v-on:click="predictcurrent" class="current currentselect"><b>Current</b></button>
+		<button v-on:click="predict7" class="week"><b>7 Days</b></button>
 	</div>
 </template>
 <script>
 export default{
-	props:["x","y","s","n","lat","log","nu","id"],
+	props:["x","y","x7","y7","s","n","lat","log","nu","id"],
+	data(){
+		return{
+			angle:"",
+			distance:"",
+		}
+	},
 	computed:{
 		css(){
 			return{
 				"--x":this.x,
 				"--y":this.y,
 				"--s":this.s,
+				"--x7":this.x7,
+				"--y7":this.y7,
+				"--ta":this.angle,
+				"--tw":this.distance,
 			}
 		}
 	},
+	mounted(){
+		var angleDeg=(180/Math.PI)*Math.atan((parseInt(this.y)-parseInt(this.y7))/(parseInt(this.x)-parseInt(this.x7)));
+		var distance=Math.sqrt(((parseInt(this.y)-parseInt(this.y7))*((parseInt(this.y)-parseInt(this.y7))))+((parseInt(this.x)-parseInt(this.x7))*((parseInt(this.x)-parseInt(this.x7)))));
+		this.angle=angleDeg+"deg";
+		this.distance=distance+"px";
+		console.log(angleDeg+" "+this.distance);
+		
+	},
 	methods:{
 		reveal:function(){
+			
 			var elements=document.getElementsByClassName("info");
 			for(var i=0;i<elements.length;i++){
 				if(i==parseInt(this.nu)){
@@ -33,16 +52,83 @@ export default{
 					elements[i].classList.add("invis");
 				}
 			}
-			//document.getElementsByClassName("info")[parseInt(this.num)].classList.remove("invis");
+			this.predictcurrent();
 		},
-		hide:function(){
-			document.getElementsByClassName("info")[parseInt(this.num)].classList.add("invis");
+		predict7:function(){
+			var elements=document.getElementsByClassName("outer");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					elements[i].classList.add("predict7");
+					
+				}else{
+					elements[i].classList.remove("predict7");
+				}
+			}
+			var buttons=document.getElementsByClassName("week");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					buttons[i].classList.add("weekselect");
+					
+				}else{
+					buttons[i].classList.remove("weekselect");
+				}
+			}
+			var buttons2=document.getElementsByClassName("current");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					buttons2[i].classList.remove("currentselect");
+					
+				}else{
+					buttons2[i].classList.add("currentselect");
+				}
+			}
+			/*
+			var trails=document.getElementsByClassName("trail");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					trails[i].classList.remove("invis");
+					
+				}else{
+					trails[i].classList.add("invis");
+				}
+			}
+			*/
+			
+		},
+		predictcurrent:function(){
+			var elements=document.getElementsByClassName("outer");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					elements[i].classList.remove("predict7");
+					
+				}else{
+					elements[i].classList.remove("predict7");
+				}
+			}
+			var buttons=document.getElementsByClassName("week");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					buttons[i].classList.remove("weekselect");
+					
+				}else{
+					buttons[i].classList.remove("weekselect");
+				}
+			}
+			var buttons2=document.getElementsByClassName("current");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					buttons2[i].classList.add("currentselect");
+					
+				}else{
+					buttons2[i].classList.add("currentselect");
+				}
+			}
 		}
 	}
 }
 </script>
 <style scoped>
-#outer{
+.outer{
 	background-color:rgb(240, 67, 67);
 	width:var(--s);
 	height:var(--s);
@@ -53,8 +139,17 @@ export default{
 	border:calc(var(--s) / 10) solid rgb(50,50,50);
 	transition:0.2s all;
 }
-#outer:hover{
+.outer:hover{
 	transform:scale(1.1);
+}
+.predict7{
+	animation-name:move7;
+	animation-duration:3s;
+	animation-fill-mode:forwards;
+}
+@keyframes move7{
+	0%{left:var(--x);top:var(--y);}
+	100%{left:var(--x7);top:var(--y7);}
 }
 .info{
 	background-color:rgb(30,30,30);
@@ -85,8 +180,21 @@ export default{
 	top:0%;
 	
 }
+.trail{
+	width:calc(var(--tw) + 10px);
+	transform:rotate(var(--ta));
+	position:absolute;
+	left:calc(var(--x) + 5px);
+	top:calc(var(--y) + 25px);
+	background-color:rgb(240, 67, 67);
+	height:10px;
+	border-radius:10px;
+	animation-name:expand;
+	animation-duration:3s;
+}
+
 .invis{
-	opacity:0;
+	display:none;
 }
 #id{
 	position:absolute;
@@ -157,9 +265,9 @@ export default{
 	color:white;
 	font-size:17px;
 }
-#current{
-	background-color:rgb(61, 131, 245);
-	color:white;
+.current{
+	background-color:transparent;
+	
 	border:none;
 	outline:none;
 	position:absolute;
@@ -172,10 +280,16 @@ export default{
 	display:flex;
 	justify-content:center;
 	align-items:center;
+	color:rgb(61,131,245);
+	border:2px solid rgb(61,131,245);
 }
-#week{
+.currentselect{
+	background-color:rgb(61, 131, 245);
+		color:white;
+	}
+.week{
 	background-color:transparent;
-	color:white;
+	
 	border:none;
 	outline:none;
 	position:absolute;
@@ -190,6 +304,11 @@ export default{
 	display:flex;
 	justify-content:center;
 	align-items:center;
+	transition:0.1s all;
+}
+.weekselect{
+	background-color:rgb(61, 131, 245);
+	color:white;
 }
 
 </style>

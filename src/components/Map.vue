@@ -9,8 +9,8 @@
 		</div>
 		-->
 	</div>
-		<Trash x="30%" y="20%" s="20px" n="14" lat="22.3545" log="33.5634" nu="0" id="252583"></Trash>
-		<Trash x="30%" y="30%" s="30px" n="37" lat="22.3545" log="33.5634" nu="1" id="123456"></Trash>
+		<Trash x="500px" y="200px" x7="520px" y7="350px" s="20px" n="14" lat="22.3545" log="33.5634" nu="0" id="252583"></Trash>
+		<Trash x="500px" y="500px" x7="550px" y7="540px" s="30px" n="37" lat="22.3545" log="33.5634" nu="1" id="123456"></Trash>
 	</div>
 	
 </template>
