@@ -10,7 +10,7 @@
   <div id="Pitch"><b>There are over<br><span class="trillion">5 TRILLION</span></b></div>
   <span class="trash"> <b>pieces of trash in the <span class="oceanai">ocean.</span></b></span>
   <div id="SubPitch">It's time to use AI to help fix that.</div>
-  <VButton x="23%" y="65%" c="blue" t="Learn More" s="medium" L="learn"></VButton>
+  <VButton x="23%" y="65%" c="blue" t="Explore" s="medium" L="map"></VButton>
  <div id="scrollto"></div>
  <div id="scrollto2"></div>
   <div class="ocean">
