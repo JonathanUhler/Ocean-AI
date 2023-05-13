@@ -89,12 +89,11 @@ function format(trashList) {
 			"n:\"" + trash.n + "\"," +
 			"lat:\"" + (Math.round(trash.lati * 1000) / 1000).toFixed(4) + "\"," +
 			"lon:\"" + (Math.round(trash.loni * 1000) / 1000).toFixed(4) + "\"," +
-			"x:\"" + trash.xi + "\"," +
-			"y:\"" + trash.yi + "\"," +
-			"x7:\"" + trash.xf + "\"," +
-			"y7:\"" + trash.yf + "\"," +
-			"s:\"" + trash.n + "\""
-			"}";
+			"x:\"" + trash.xi + "px\"," +
+			"y:\"" + trash.yi + "px\"," +
+			"x7:\"" + trash.xf + "px\"," +
+			"y7:\"" + trash.yf + "px\"," +
+			"s:\"" + Math.floor(Math.max(trash.n, 5) / 2) + "px\"}";
 
 		if (i < trashList.length - 1)
 			str += ","
