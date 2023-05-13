@@ -134,7 +134,7 @@ body{
 
 #Background{
 	overflow:hidden;
-	background-color:rgb(235,235,235);
+	background-color:rgb(245,245,245);
 	position:absolute;
 	left:0%;
 	top:0%;
