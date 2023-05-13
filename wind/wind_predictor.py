@@ -1,10 +1,13 @@
 import os
 import csv
 import math
+import random
+import string
 from wind_cleaner import csv_out_path
 
 
 prediction_time = 604800 # seconds
+random_trash_count = 100 # how many randomly placed trash should be added
 
 
 wind_file = csv_out_path
@@ -56,8 +59,8 @@ class Trash:
 
         @param ident  the unique id for this trash.
         @param num    the number of pieces of trash in this pile.
-        @param lat    the starting latitude of this trash.
-        @param lon    the starting longitude of this trash.
+        @param lat    the starting latitude of this trash [-90, 90).
+        @param lon    the starting longitude of this trash [0, 360).
         """
         
         self.ident = ident
@@ -212,20 +215,32 @@ def nearest(lat: float, lon: float) -> WindVector:
 def main():
     trash_origins = read_trash_origins()
     trash_list: list = []
+
+    # Add real world trash
     for origin in trash_origins:
         # +180 really hacky since this code (and NOAA wind stuff) expected longitude to be [0, 360)
         trash_list.append(Trash(origin[0], origin[1], origin[2], origin[3] + 180))
 
+    # Add the random trash
+    for i in range(random_trash_count):
+        random_id = ''.join(random.choices(string.digits, k=6))
+        random_num = random.choice([random.randint(5, 15)] * 4 + [random.randint(15, 100)])
+        random_lat = random.uniform(-89.0, 89.0)
+        random_lon = random.uniform(1.0, 359.0)
+        trash_list.append(Trash(random_id, random_num, random_lat, random_lon))
+
+    # Simulate
     time_interval: int = 300 # seconds
     iterations: int = int(prediction_time / time_interval)
     for i in range(iterations):
         if (i % 100 == 0):
-            print(f"iteration {i}/{iterations} ({i/iterations*100}%)")
+            print(f"iteration {i}/{iterations} ({'%.2f' % (i/iterations*100)}%)")
         
         for trash in trash_list:
             wind: WindVector = nearest(trash.lat, trash.lon)
             trash.update(wind, time_interval)
 
+    # Write results to file
     write_predictions(trash_list)
 
 
