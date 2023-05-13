@@ -1,24 +1,30 @@
 <template>
+	
 	<div id="Background">
 		<img :src="require(`../assets/world3.svg`)" />
 		<div id="infofake">
-		<!--<div id="id"><b>TOTAL</b></div>
-		<div id="numfake"><b>100K</b></div>
+		<div id="id"><b>Click a Red Dot to Begin</b></div>
+		</div>
+		
+		<!--<div id="numfake"><b>100K</b></div>
 		<div id="numlabel">pieces of trash</div>
 		<div id="location">📍 300+ Trash Heaps 📍</div>
 		</div>
 		-->
 	</div>
-		<Trash x="30%" y="20%" s="20px" n="14" lat="22.3545" log="33.5634" nu="0" id="252583"></Trash>
-		<Trash x="30%" y="30%" s="30px" n="37" lat="22.3545" log="33.5634" nu="1" id="123456"></Trash>
-	</div>
+	<VButton x="1.5%" y="2%" t="Back" c="blue" s="small" L="/"></VButton>
+	<Trash x="500px" y="200px" x7="520px" y7="350px" s="20px" n="14" lat="22.3545" log="33.5634" nu="0" id="252583"></Trash>
+	<Trash x="500px" y="500px" x7="550px" y7="540px" s="30px" n="37" lat="22.3545" log="33.5634" nu="1" id="123456"></Trash>
+	
 	
 </template>
 <script>
 import Trash from "./Trash.vue";
+import VButton from "./VButton.vue";
 export default{
 	components:{
-		Trash
+		Trash,
+		VButton
 	},
 }
 	
@@ -54,16 +60,17 @@ body{
 }
 #id{
 	position:absolute;
-	width:100%;
-	left:0%;
-	top:8%;
+	width:70%;
+	left:15%;
+	top:45%;
 	height:10%;
 	display:flex;
 	justify-content:center;
 	align-items:center;
 	text-align:center;
 	color:white;
-	font-size:25px;
+	font-size:20px;
+	
 }
 #num{
 	font-size:60px;
