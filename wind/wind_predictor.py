@@ -6,8 +6,9 @@ import string
 from wind_cleaner import csv_out_path
 
 
-prediction_time = 604800 # seconds
-random_trash_count = 100 # how many randomly placed trash should be added
+prediction_time = 86400 # seconds
+time_interval = 300 # seconds
+random_trash_xy = [(611, 652),(602, 646),(595, 611),(586, 586),(553, 572),(542, 563),(505, 535),(479, 515),(462, 489),(466, 453),(457, 425),(437, 407),(394, 379),(375, 349),(415, 363),(547, 421),(589, 518),(626, 571),(525, 383),(567, 361),(517, 368),(647, 289),(600, 385),(524, 316),(494, 289),(516, 245),(578, 214),(633, 174),(1162, 475),(1142, 491),(1144, 530),(1198, 531),(1184, 604),(1185, 516),(1152, 581),(1119, 506),(1183, 609),(1199, 667),(1151, 649),(1151, 666),(1081, 620),(1049, 604),(1258, 691),(1240, 759),(1152, 792),(1013, 842),(1110, 858),(1260, 846),(1249, 903),(1324, 772),(1276, 826),(1030, 866),(786, 874),(629, 816),(671, 842),(524, 834),(512, 866),(539, 775),(580, 707),(613, 631),(267, 541),(254, 596),(261, 686),(310, 737),(360, 788),(339, 852),(368, 902),(237, 790),(231, 598),(202, 513),(89, 458),(63, 331),(61, 230),(95, 197),(18, 261),(29, 321),(214, 53),(255, 45),(310, 34),(44, 637),(85, 763),(153, 777)]
 
 
 wind_file = csv_out_path
@@ -212,25 +213,31 @@ def nearest(lat: float, lon: float) -> WindVector:
     return WindVector(wind_x, wind_y)
 
 
-def main():
+def main(use_real_trash: bool = False):
     trash_origins = read_trash_origins()
     trash_list: list = []
 
     # Add real world trash
-    for origin in trash_origins:
-        # +180 really hacky since this code (and NOAA wind stuff) expected longitude to be [0, 360)
-        trash_list.append(Trash(origin[0], origin[1], origin[2], origin[3] + 180))
+    if (use_real_trash):
+        for origin in trash_origins:
+            # +180 really hacky since this code (and NOAA wind stuff) expected longitude to be [0, 360)
+            trash_list.append(Trash(origin[0], origin[1], origin[2], origin[3] + 180))
 
     # Add the random trash
-    for i in range(random_trash_count):
+    screen_width = 1920
+    screen_height = 980
+    px_per_deg_lon = int(screen_width / 360)
+    px_per_deg_lat = int(screen_height / 180)
+    for random_trash in random_trash_xy:
+        random_x = random_trash[0]
+        random_y = random_trash[1]
+        random_lat = -((random_y / px_per_deg_lat) - 90)
+        random_lon = (random_x / px_per_deg_lon)
         random_id = ''.join(random.choices(string.digits, k=6))
-        random_num = random.choice([random.randint(5, 15)] * 4 + [random.randint(15, 100)])
-        random_lat = random.uniform(-89.0, 89.0)
-        random_lon = random.uniform(1.0, 359.0)
+        random_num = random.choice([random.randint(15, 29)] * 3 + [random.randint(30, 100)])
         trash_list.append(Trash(random_id, random_num, random_lat, random_lon))
 
     # Simulate
-    time_interval: int = 300 # seconds
     iterations: int = int(prediction_time / time_interval)
     for i in range(iterations):
         if (i % 100 == 0):

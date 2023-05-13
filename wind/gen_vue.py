@@ -1,5 +1,6 @@
 import csv
 from wind_predictor import pred_file
+from wind_predictor import distance
 
 
 screen_width = 1920
