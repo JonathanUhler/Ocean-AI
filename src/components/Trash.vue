@@ -18,18 +18,22 @@ export default{
 		return{
 			angle:"",
 			distance:"",
+			left:"",
+			top:"",
 		}
 	},
 	computed:{
 		css(){
 			return{
-				"--x":this.x,
-				"--y":this.y,
+				"--x":(parseInt(this.x)-160)+"px",
+				"--y":(parseInt(this.y)-30)+"px",
 				"--s":this.s,
 				"--x7":this.x7,
 				"--y7":this.y7,
 				"--ta":this.angle,
 				"--tw":this.distance,
+				"--left":this.left+"px",
+				"--top":this.top+"px",
 			}
 		}
 	},
@@ -38,8 +42,13 @@ export default{
 		var distance=Math.sqrt(((parseInt(this.y)-parseInt(this.y7))*((parseInt(this.y)-parseInt(this.y7))))+((parseInt(this.x)-parseInt(this.x7))*((parseInt(this.x)-parseInt(this.x7)))));
 		this.angle=angleDeg+"deg";
 		this.distance=distance+"px";
-		console.log(angleDeg+" "+this.distance);
-		
+		//console.log(angleDeg+" "+this.distance);
+		this.$nextTick(function () {
+            window.setInterval(() => {
+                this.countDown();
+				
+            },10);
+        })
 		
 	},
 	methods:{
@@ -124,6 +133,10 @@ export default{
 					buttons2[i].classList.add("currentselect");
 				}
 			}
+		},
+		countDown(){
+				this.left=localStorage.getItem("left");
+				this.top=localStorage.getItem("top");
 		}
 	}
 }
@@ -135,10 +148,10 @@ export default{
 	height:var(--s);
 	border-radius:1000px;
 	position:absolute;
-	left:calc(var(--x) + var(--s) / 2);
-	top:calc(var(--y) + var(--s) / 2);
+	left:calc(var(--x) + var(--s) / 2 + var(--left));
+	top:calc(var(--y) + var(--s) / 2 + var(--top));
 	border:calc(var(--s) / 10) solid rgb(50,50,50);
-	transition:0.2s all;
+	transition:0.2s transform;
 }
 .outer:hover{
 	transform:scale(1.1);
@@ -149,8 +162,8 @@ export default{
 	animation-fill-mode:forwards;
 }
 @keyframes move7{
-	0%{left:calc(var(--x) + var(--s) / 2);top:calc(var(--y) + var(--s) / 2);}
-	100%{left:calc(var(--x7) + var(--s) / 2);top:calc(var(--y7) + var(--s) / 2);}
+	0%{left:calc(var(--x) + var(--s) / 2 + var(--left));top:calc(var(--y) + var(--s) / 2 + var(--top));}
+	100%{left:calc(var(--x7) + var(--s) / 2 + var(--left));top:calc(var(--y7) + var(--s) / 2 + var(--top));}
 }
 .info{
 	background-color:rgb(30,30,30);
