@@ -60,7 +60,7 @@ export default{
 	position:absolute;
 	width:30%;
 	height:20%;
-	left:18.5%;
+	left:18%;
 	top:25%;
 	display:flex;
 	align-items:center;
@@ -91,7 +91,9 @@ img{
 	top:var(--iy);
 	border-radius:10px;
 	filter:saturate(120%);
+	
 }
+
 #PitchR{
 	position:absolute;
 	width:30%;

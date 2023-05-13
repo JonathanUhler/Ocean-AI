@@ -35,7 +35,7 @@ export default{
 	},
 	mounted(){
 		if(this.o==""){
-			this.bc="white";
+			this.bc="rbga(0,0,0,0)";
 			if(this.c=="blue"){
 				this.tc="rgb(61, 131, 245)";
 				this.oc="rgb(61, 131, 245)";

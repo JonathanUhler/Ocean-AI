@@ -17,7 +17,7 @@
   <div class="wave"></div>
   <div class="wave"></div>
  
-  <VFeature y="0px" c="rgb(245,245,245)" side="left" mp="The Ocean is Full of Trash" sp="There are thousands of heaps of trash in the ocean, scatttered all throughout the globe. Most of them are far from land and drift constantly, which makes it near impossible to clean them up." i="planet2.jpg" iw="28%" ih="480px" iy="70px"></VFeature>
+  <VFeature y="0px" c="rgb(245,245,245)" side="left" mp="The Ocean is Full of Trash" sp="There are thousands of heaps of trash in the ocean, scatttered all throughout the globe. Most of them are far from land and drift constantly, which makes it near impossible to clean them up." i="planet2.jpg" iw="28%" ih="500px" iy="70px"></VFeature>
   <VFeature y="500px" c="rgb(245,245,245)" side="right" mp="AI is Changing the Game" sp="With new advanced AI data analysis of wind and ocean currents, we can not only map all of these heaps but also predict where they'll drift to next, which facilitates the clean up process." i="data.jpg" iw="25%" ih="440px" iy="70px"></VFeature>
   <VFeature y="1000px" c="rgb(245,245,245)" side="left" mp="The Trash Map" sp="Our map shows trash heaps around the world with detailed information, and allows you to see where they'll be in a week or a month." i="map.webp" iw="23%" ih="300px" iy="120px"></VFeature>
   <VFeature y="1500px" c="rgb(245,245,245)" side="right" mp="Purifying for a Better Future" sp="This allows clean up efforts to better locate trash heaps and clean them up. We need to purify the ocean not just for humans, but for all living organisms on Earth." i="reef2.png" iw="27%" ih="450px" iy="60px"></VFeature>
@@ -46,9 +46,9 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 body{
 	font-family: 'Open Sans', sans-serif;
-	background-color:rgb(245,245,235);
+	background-color:rgb(245,245,245);
 	height:100%;
-	background:radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #B7E8EB 100%);
+	//background:radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #B7E8EB 100%);
   overflow-x:hidden;
 }
 html {
