@@ -1,22 +1,20 @@
 <template>
-	
 	<div id="Background" @mousedown="mouseDown" @mouseup="mouseUp">
-		<img :style="css" id="my-image" :src="require(`../assets/world3.svg`)" />
-		<div id="infofake">
-		<div id="numfake">✅</div>
-		<div id="id"><b>Click a Red Dot to Begin</b></div>
-		</div>
-		
-		<!--<div id="numfake"><b>100K</b></div>
-		<div id="numlabel">pieces of trash</div>
-		<div id="location">📍 300+ Trash Heaps 📍</div>
-		</div>
-		-->
+	<img :style="css" id="my-image" :src="require(`../assets/world3.svg`)" />
 	</div>
+	
 	<VButton x="1.5%" y="2%" t="Back" c="blue" s="small" L="/"></VButton>
+	<div id="infofake">
+			<div id="numfake">✅</div>
+			<div id="id"><b>Click a Red Dot to Begin</b></div>
+		</div>
 	<div v-for="(trash,index) in trashes">
 		<Trash :x="trash.x" :y="trash.y" :x7="trash.x7" :y7="trash.y7" :s="trash.s" :n="trash.n" :lat="trash.lat" :log="trash.lon" :id="trash.id" :nu="index"></Trash>
 	</div>
+	
+		
+		
+	
 	
 	
 </template>
@@ -106,6 +104,7 @@ body{
 	top:3%;
 	height:30%;
 	border-radius:50px 50px 0px 0px;
+	z-index:1000;
 }
 #back{
 	background:transparent;
@@ -209,5 +208,7 @@ img{
 	filter:brightness(120%);
 	left:var(--left);
 	top:var(--top);
+	
 }
+
 </style>

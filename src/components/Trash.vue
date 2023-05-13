@@ -62,7 +62,9 @@ export default{
 					elements[i].classList.add("invis");
 				}
 			}
+			document.getElementById("infofake").style.display="none";
 			this.predictcurrent();
+			
 		},
 		predict7:function(){
 			var elements=document.getElementsByClassName("outer");
@@ -175,6 +177,7 @@ export default{
 	border-radius:50px 50px 0px 0px;
 	
 	transition:0.1s all;
+	z-index:999;
 }
 #infofake{
 	background-color:rgb(30,30,30);
@@ -280,7 +283,7 @@ export default{
 	font-size:17px;
 }
 .current{
-	background-color:transparent;
+	background-color:rgb(245,245,245);
 	
 	border:none;
 	outline:none;
@@ -302,7 +305,7 @@ export default{
 		color:white;
 	}
 .week{
-	background-color:transparent;
+	background-color:rgb(245,245,245);
 	
 	border:none;
 	outline:none;
