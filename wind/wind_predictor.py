@@ -4,7 +4,7 @@ import math
 from wind_cleaner import csv_out_path
 
 
-prediction_time = 604800 * 4 # seconds
+prediction_time = 604800 # seconds
 
 
 wind_file = csv_out_path
@@ -164,9 +164,11 @@ def write_predictions(trash_list: list) -> None:
     trash_csv_list: list = [["id", "n", "lati", "loni", "latf", "lonf"]]
 
     for trash in trash_list:
+        # subtract -180 since the NOAA stuff expected long to be [0, 360) and it should really be
+        # [-180, 180)
         trash_csv_list.append([trash.ident, trash.num,
-                               trash.lati, trash.loni,
-                               trash.lat, trash.lon])
+                               trash.lati, trash.loni - 180,
+                               trash.lat, trash.lon - 180])
     
     with open(pred_file, "w") as f:
         writer = csv.writer(f, delimiter=",")
@@ -211,11 +213,15 @@ def main():
     trash_origins = read_trash_origins()
     trash_list: list = []
     for origin in trash_origins:
-        trash_list.append(Trash(origin[0], origin[1], origin[2], origin[3]))
+        # +180 really hacky since this code (and NOAA wind stuff) expected longitude to be [0, 360)
+        trash_list.append(Trash(origin[0], origin[1], origin[2], origin[3] + 180))
 
     time_interval: int = 300 # seconds
     iterations: int = int(prediction_time / time_interval)
     for i in range(iterations):
+        if (i % 100 == 0):
+            print(f"iteration {i}/{iterations} ({i/iterations*100}%)")
+        
         for trash in trash_list:
             wind: WindVector = nearest(trash.lat, trash.lon)
             trash.update(wind, time_interval)
