@@ -40,10 +40,11 @@ export default{
 		this.distance=distance+"px";
 		console.log(angleDeg+" "+this.distance);
 		
+		
 	},
 	methods:{
 		reveal:function(){
-			
+			console.log(this.nu);
 			var elements=document.getElementsByClassName("info");
 			for(var i=0;i<elements.length;i++){
 				if(i==parseInt(this.nu)){
@@ -134,8 +135,8 @@ export default{
 	height:var(--s);
 	border-radius:1000px;
 	position:absolute;
-	left:var(--x);
-	top:var(--y);
+	left:calc(var(--x) + var(--s) / 2);
+	top:calc(var(--y) + var(--s) / 2);
 	border:calc(var(--s) / 10) solid rgb(50,50,50);
 	transition:0.2s all;
 }
@@ -148,8 +149,8 @@ export default{
 	animation-fill-mode:forwards;
 }
 @keyframes move7{
-	0%{left:var(--x);top:var(--y);}
-	100%{left:var(--x7);top:var(--y7);}
+	0%{left:calc(var(--x) + var(--s) / 2);top:calc(var(--y) + var(--s) / 2);}
+	100%{left:calc(var(--x7) + var(--s) / 2);top:calc(var(--y7) + var(--s) / 2);}
 }
 .info{
 	background-color:rgb(30,30,30);
