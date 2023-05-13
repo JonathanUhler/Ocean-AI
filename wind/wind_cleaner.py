@@ -3,7 +3,7 @@ import os
 
 
 # USER CONSTANTS
-resolution = 10 # The resolution of the cleaned data, in degrees
+resolution = 5 # The resolution of the cleaned data, in degrees
 csv_in_name = "uv_wind.csv"
 csv_out_name = "wind_final.csv"
 # end: USER CONSTANTS

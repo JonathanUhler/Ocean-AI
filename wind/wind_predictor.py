@@ -1,12 +1,15 @@
 import os
 import csv
 import math
-from wind_cull import csv_out_path
+from wind_cleaner import csv_out_path
+
+
+prediction_time = 604800 * 4 # seconds
 
 
 wind_file = csv_out_path
 trash_file = os.getcwd() + "/trash_origins.csv"
-pred_file = os.getcwd() + "/trash_paths.csv"
+pred_file = os.getcwd() + f"/trash_predictions_{prediction_time}s.csv"
 
 
 class WindVector:
@@ -47,16 +50,20 @@ class Trash:
     """
     
     
-    def __init__(self, ident: str, lat: float, lon: float):
+    def __init__(self, ident: str, num: int, lat: float, lon: float):
         """
         Constructs a new {@code Trash} object.
 
         @param ident  the unique id for this trash.
+        @param num    the number of pieces of trash in this pile.
         @param lat    the starting latitude of this trash.
         @param lon    the starting longitude of this trash.
         """
         
         self.ident = ident
+        self.num = num
+        self.lati = lat
+        self.loni = lon
         self.lat = lat
         self.lon = lon
 
@@ -78,9 +85,29 @@ class Trash:
         self.lat += v_lat * (1 / m_per_lat) * delta_t
         self.lon += v_lon * (1 / m_per_lon) * delta_t
 
+        # Handle wrapping around the planet
+        if (self.lon < 0):
+            self.lon = 359.9
+        if (self.lon >= 360):
+            self.lon = 0
+
+        if (self.lat <= -90):
+            self.lat = -89.9
+            if (self.lon >= 180):
+                self.lon -= 180
+            else:
+                self.lon += 180
+        if (self.lat >= 90):
+            self.lat = 89.9
+            if (self.lon >= 180):
+                self.lon -= 180
+            else:
+                self.lon += 180
+                
+
 
     def __str__(self):
-        return f"{self.ident}: {self.lat}N {self.lon}E"
+        return f"{self.ident}: x{self.num} @ {self.lat}N {self.lon}E"
 
 
 def distance(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -125,17 +152,28 @@ def read_trash_origins() -> list:
         trash_origins: list = []
         for r in range(1, len(rows)):
             row = rows[r]
-            row[1] = float(row[1])
             row[2] = float(row[2])
+            row[3] = float(row[3])
 
             trash_origins.append(row)
             
         return trash_origins
 
 
+def write_predictions(trash_list: list) -> None:
+    trash_csv_list: list = [["id", "n", "lati", "loni", "latf", "lonf"]]
+
+    for trash in trash_list:
+        trash_csv_list.append([trash.ident, trash.num,
+                               trash.lati, trash.loni,
+                               trash.lat, trash.lon])
+    
+    with open(pred_file, "w") as f:
+        writer = csv.writer(f, delimiter=",")
+        writer.writerows(trash_csv_list)
+
+
 wind_data: list = None
-
-
 def nearest(lat: float, lon: float) -> WindVector:
     """
     Finds the nearest wind vector to the given position.
@@ -173,17 +211,16 @@ def main():
     trash_origins = read_trash_origins()
     trash_list: list = []
     for origin in trash_origins:
-        trash_list.append(Trash(origin[0], origin[1], origin[2]))
+        trash_list.append(Trash(origin[0], origin[1], origin[2], origin[3]))
 
-    time_interval: float = 300 # seconds
-    iterations: int = 100
+    time_interval: int = 300 # seconds
+    iterations: int = int(prediction_time / time_interval)
     for i in range(iterations):
         for trash in trash_list:
             wind: WindVector = nearest(trash.lat, trash.lon)
             trash.update(wind, time_interval)
 
-    for trash in trash_list:
-        print(trash)
+    write_predictions(trash_list)
 
 
 if (__name__ == "__main__"):
