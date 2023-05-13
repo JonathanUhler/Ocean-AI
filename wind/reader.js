@@ -79,5 +79,32 @@ function getTrash(string) {
 }
 
 
+function format(trashList) {
+	var str = "[";
+
+	for (var i = 0; i < trashList.length; i++) {
+		var trash = trashList[i];
+		str += "{" +
+			"id:\"" + trash.id + "\"," +
+			"n:\"" + trash.n + "\"," +
+			"lat:\"" + (Math.round(trash.lati * 1000) / 1000).toFixed(4) + "\"," +
+			"lon:\"" + (Math.round(trash.loni * 1000) / 1000).toFixed(4) + "\"," +
+			"x:\"" + trash.xi + "\"," +
+			"y:\"" + trash.yi + "\"," +
+			"x7:\"" + trash.xf + "\"," +
+			"y7:\"" + trash.yf + "\"," +
+			"s:\"" + trash.n + "\""
+			"}";
+
+		if (i < trashList.length - 1)
+			str += ","
+	}
+
+	str += "]";
+	return str;
+}
+
+
 var sevenDayObjects = getTrash(SEVEN_DAY);
-console.log(sevenDayObjects);
+var vueString = format(sevenDayObjects);
+console.log(vueString);
