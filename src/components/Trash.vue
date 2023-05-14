@@ -1,12 +1,12 @@
 <template>
-	<!--<div class="trail invis" :style="css"></div>-->
+	<div class="trail invis" :style="css"></div>
 	<div v-on:click="reveal" class="outer" :style="css"></div>
 	
 	<div class="info invis" >
 		<div id="id"><b>ID #{{id}}</b></div>
 		<div id="num"><b>{{n}}</b></div>
 		<div id="numlabel">pieces of trash</div>
-		<div id="location">📍 {{lat}} {{log}} 📍</div>
+		<div id="location">📌 {{lat}}, {{log}} </div>
 		<button  v-on:click="predictcurrent" class="current currentselect"><b>Current</b></button>
 		<button v-on:click="predict7" class="week"><b>7 Days</b></button>
 	</div>
@@ -20,6 +20,8 @@ export default{
 			distance:"",
 			left:"0",
 			top:"0",
+			cx:"",
+			cy:"",
 		}
 	},
 	computed:{
@@ -32,14 +34,19 @@ export default{
 				"--y7":(parseInt(this.y7)-30)+"px",
 				"--ta":this.angle,
 				"--tw":this.distance,
+				"--tx":(parseInt(this.cx)-160)+"px",
+				"--ty":this.cy+"px",
 				"--left":(parseInt(this.left)+180)+"px",
 				"--top":this.top+"px",
 			}
 		}
 	},
 	mounted(){
-		var angleDeg=(180/Math.PI)*Math.atan((parseInt(this.y)-parseInt(this.y7))/(parseInt(this.x)-parseInt(this.x7)));
+		var angleDeg=(180/Math.PI)*Math.atan2((parseInt(this.y)-parseInt(this.y7)),(parseInt(this.x)-parseInt(this.x7)));
 		var distance=Math.sqrt(((parseInt(this.y)-parseInt(this.y7))*((parseInt(this.y)-parseInt(this.y7))))+((parseInt(this.x)-parseInt(this.x7))*((parseInt(this.x)-parseInt(this.x7)))));
+		this.cx=((parseInt(this.x))+(parseInt(this.x7)))/2;
+		this.cy=((parseInt(this.y)-30)+(parseInt(this.y7)-30))/2;
+		
 		this.angle=angleDeg+"deg";
 		this.distance=distance+"px";
 		//console.log(angleDeg+" "+this.distance);
@@ -53,7 +60,7 @@ export default{
 	},
 	methods:{
 		reveal:function(){
-			console.log(this.nu);
+			
 			var elements=document.getElementsByClassName("info");
 			for(var i=0;i<elements.length;i++){
 				if(i==parseInt(this.nu)){
@@ -70,9 +77,20 @@ export default{
 					elements[i].style.backgroundColor="rgb(240, 67, 67)";
 				}
 			}
-			document.getElementById("infofake").style.display="none";
 			this.predictcurrent();
-			
+			document.getElementById("infofake").style.display="none";
+			/*
+			var trails=document.getElementsByClassName("trail");
+			for(var i=0;i<elements.length;i++){
+				if(i==parseInt(this.nu)){
+					trails[i].classList.remove("invis");
+					
+				}else{
+					trails[i].classList.add("invis");
+				}
+			}
+			this.predictcurrent();
+			*/
 		},
 		predict7:function(){
 			var elements=document.getElementsByClassName("outer");
@@ -102,17 +120,9 @@ export default{
 					buttons2[i].classList.add("currentselect");
 				}
 			}
-			/*
-			var trails=document.getElementsByClassName("trail");
-			for(var i=0;i<elements.length;i++){
-				if(i==parseInt(this.nu)){
-					trails[i].classList.remove("invis");
-					
-				}else{
-					trails[i].classList.add("invis");
-				}
-			}
-			*/
+			
+			
+			
 			
 		},
 		predictcurrent:function(){
@@ -183,14 +193,14 @@ export default{
 	100%{left:calc((var(--x7)) + (var(--s) / 2) + (var(--left)));top:calc((var(--y7)) + (var(--s) / 2) + (var(--top)));}
 }
 .info{
-	background-color:rgb(30,30,30);
+	background-color:rgb(245,245,245);
 	position:absolute;
 	left:1690px;
 	width:200px;
 	top:3%;
 	height:30%;
 	border-radius:50px 50px 0px 0px;
-	
+	border:2.5px solid rgba(0,0,0,0.3);
 	transition:0.1s all;
 	z-index:999;
 }
@@ -213,11 +223,11 @@ export default{
 	
 }
 .trail{
-	width:calc(var(--tw) + 10px);
+	width:var(--tw);
 	transform:rotate(var(--ta));
 	position:absolute;
-	left:calc(var(--x) + 5px);
-	top:calc(var(--y) + 25px);
+	left:calc(var(--tx) + var(--left));
+	top:calc(var(--ty) + var(--top));
 	background-color:rgb(240, 67, 67);
 	height:10px;
 	border-radius:10px;
@@ -238,7 +248,7 @@ export default{
 	justify-content:center;
 	align-items:center;
 	text-align:center;
-	color:white;
+	color:rgba(0,0,0,0.7);
 	font-size:25px;
 }
 #num{
@@ -253,7 +263,7 @@ export default{
 	align-items:center;
 	text-align:center;
 	color:rgb(240, 67, 67);
-	border-radius:50px;
+	border-radius:30px;
 	border:3px dashed rgb(240, 67, 67);
 }
 #numfake{
@@ -281,7 +291,7 @@ export default{
 	justify-content:center;
 	align-items:center;
 	text-align:center;
-	color:white;
+	color:rgba(0,0,0,0.7);;
 	font-size:20px;
 }
 #location{
@@ -294,7 +304,7 @@ export default{
 	justify-content:center;
 	align-items:center;
 	text-align:center;
-	color:white;
+	color:rgba(0,0,0,1);
 	font-size:17px;
 }
 .current{
@@ -303,17 +313,18 @@ export default{
 	border:none;
 	outline:none;
 	position:absolute;
-	left:0%;
+	left:-1%;
 	top:100%;
-	width:50%;
+	width:51%;
 	height:10%;
 	font-family: 'Open Sans', sans-serif;
-	border-radius:0px 0px 0px 20px;
+	border-radius:0px 0px 0px 50px;
 	display:flex;
 	justify-content:center;
 	align-items:center;
+	text-align:center;
 	color:rgb(61,131,245);
-	border:2px solid rgb(61,131,245);
+	border:2.5px solid rgb(61,131,245);
 }
 .currentselect{
 	background-color:rgb(61, 131, 245);
@@ -327,15 +338,16 @@ export default{
 	position:absolute;
 	left:50%;
 	top:100%;
-	width:50%;
+	width:51%;
 	height:10%;
 	font-family: 'Open Sans', sans-serif;
 	color:rgb(61,131,245);
-	border-radius:0px 0px 20px 0px;
-	border:2px solid rgb(61,131,245);
+	border-radius:0px 0px 50px 0px;
+	border:2.5px solid rgb(61,131,245);
 	display:flex;
 	justify-content:center;
 	align-items:center;
+	text-align:center;
 	transition:0.1s all;
 }
 .weekselect{

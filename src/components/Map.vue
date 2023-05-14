@@ -5,18 +5,20 @@
 	
 	<VButton x="1.5%" y="2%" t="Back" c="blue" s="small" L="/"></VButton>
 	<div id="infofake">
-			<div id="numfake">✅</div>
+			<div id="numfake">✔️</div>
 			<div id="id"><b>Click a Red Dot to Begin</b></div>
 		</div>
-	<div v-for="(trash,index) in trashes">
-		<Trash :x="trash.x" :y="trash.y" :x7="trash.x7" :y7="trash.y7" :s="trash.s" :n="trash.n" :lat="trash.lat" :log="trash.lon" :id="trash.id" :nu="index"></Trash>
+	<div v-for="(trash,index) in activeDots">
+		<Trash  :x="trash.x" :y="trash.y" :x7="trash.x7" :y7="trash.y7" :s="trash.s" :n="trash.n" :lat="trash.lat" :log="trash.lon" :id="trash.id" :nu="index"></Trash>
 	</div>
 	<VInput x="1%" y="93%" c="blue" s="medium" t="Search ID:"></VInput>
+	<div class="slidecontainer">
+		<div id="slidelabel">Minimum Size</div>
 		
-		
-	
-	
-	
+		<input id="slide" type="range" v-model="minSize">
+		<div id="slidemin">1</div>
+		<div id="slidemax">100</div>
+	</div>
 </template>
 <script>
 import Trash from "./Trash.vue";
@@ -40,7 +42,33 @@ export default{
 			top:"0",
 			xcoords:[],
 			ycoords:[],
+			minSize:15,
+		}
+	},
+	watch:{
+		minSize(newMinSize){
 			
+			var elements=document.getElementsByClassName("info");
+			for(var i=0;i<elements.length;i++){
+				
+					elements[i].classList.add("invis");
+				
+			}
+			var elements=document.getElementsByClassName("outer");
+			for(var i=0;i<elements.length;i++){
+				
+					elements[i].style.backgroundColor="rgb(240, 67, 67)";
+				
+			}
+			document.getElementById("infofake").style.display="none";
+			
+			var trails=document.getElementsByClassName("trail");
+			for(var i=0;i<elements.length;i++){
+				
+					trails[i].classList.add("invis");
+				
+			}
+			document.getElementById("infofake").style.display="block";
 		}
 	},
 	computed:{
@@ -49,6 +77,12 @@ export default{
 				"--left":this.left+"px",
 				"--top":this.top+"px",
 			}
+		},
+		activeDots(){
+			var min=this.minSize;
+			return this.trashes.filter(function(u){
+				return parseInt(u.n)>=min;
+			})
 		}
 	},
 	methods:{
@@ -108,16 +142,76 @@ body{
 }
 
 
-
+#slide{
+	position:absolute;
+	left:50%;
+	top:80%;
+	border-radius:5px;
+	width:100%;
+	height:50px;
+	overflow:hidden;
+	border:2.5px solid rgb(0,0,0,0.3);
+	-webkit-appearance:none;
+	border-radius:10px;
+	font-size:80px;
+	padding-left:10px;
+	padding-right:10px;
+}
+#slide::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius:20px;
+  background: rgb(61, 131, 245);
+  cursor: pointer;
+}
+.slidecontainer {
+  width: 15%; 
+  position:absolute;
+  left:75%;
+  height:100px;
+  top:84%;
+  border-radius:20px;
+  
+ 
+  
+}
+#slidelabel{
+	position:absolute;
+	font-size:25px;
+	color:rgba(0,0,0,0.7);
+	left:100%;
+	width:200px;
+	top:45%;
+}
+#slidemin{
+	position:absolute;
+	font-size:20px;
+	color:rgba(0,0,0,0.7);
+	left:55%;
+	width:20px;
+	top:95%;
+}
+#slidemax{
+	position:absolute;
+	font-size:20px;
+	color:rgba(0,0,0,0.7);
+	left:142%;
+	width:20px;
+	top:95%;
+}
 
 #infofake{
-	background-color:rgb(30,30,30);
+	background-color:rgb(245,245,245);
+	
 	position:absolute;
 	left:1690px;
 	width:200px;
 	top:3%;
-	height:30%;
-	border-radius:50px 50px 0px 0px;
+	height:33%;
+	border-radius:50px 50px 50px 50px;
+	border:2.5px solid rgba(0,0,0,0.3);
 	z-index:1000;
 }
 #back{
@@ -144,6 +238,7 @@ body{
 	text-align:center;
 	color:white;
 	font-size:20px;
+	color:rgba(0,0,0,0.7);
 	
 }
 #num{
@@ -162,7 +257,7 @@ body{
 	border:3px dashed rgb(240, 67, 67);
 }
 #numfake{
-	font-size:50px;
+	font-size:70px;
 	position:absolute;
 	width:150px;
 	left:12%;
