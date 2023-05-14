@@ -21,6 +21,9 @@
   <VFeature y="500px" c="rgb(245,245,245)" side="right" mp="AI is Changing the Game" sp="With new advanced AI data analysis of wind and ocean currents, we can not only map all of these heaps but also predict where they'll drift to next, which facilitates the clean up process." i="data.png" iw="25%" ih="440px" iy="70px" ix="19%"></VFeature>
   <VFeature y="1000px" c="rgb(245,245,245)" side="left" mp="The Trash Map" sp="Our map shows trash heaps around the world with detailed information, and uses data to predict where they'll be in a week or a month." i="map.webp" iw="23%" ih="300px" iy="120px"></VFeature>
   <VFeature y="1500px" c="rgb(245,245,245)" side="right" mp="Purifying for a Better Future" sp="This allows clean up efforts to better locate trash heaps and clean them up. We need to purify the ocean not just for humans, but for all living organisms on Earth." i="ocean2.png" iw="25%" ih="450px" iy="60px" ix="19%"></VFeature>
+	<img id="FinalImage" src="../assets/o.png">
+	<div id="FinalPitch">It's time we used modern technology to solve environmental problems. Our Earth depends on it!</div>
+	<VButton x="42%" y="2500px" c="blue" t="Explore" s="large" L="map"></VButton>
 </div>
 </template>
 
@@ -37,7 +40,53 @@ export default {
 		scroll(){
 			var container = this.$el.querySelector("#scrollto");
 			container.scrollTop = container.scrollHeight;
+		},
+		countDown(){
+			console.log(window.scrollY);
+			if(window.scrollY<=700){
+				document.getElementsByClassName("ii")[0].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[1].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[2].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[3].style.transform="scale(1)";
+			}
+			else if(window.scrollY>=700 && window.scrollY<=1200){
+				document.getElementsByClassName("ii")[0].style.transform="scale(1.1)";
+				document.getElementsByClassName("ii")[1].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[2].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[3].style.transform="scale(1)";
+			}
+			else if(window.scrollY>=1200 && window.scrollY<=1700){
+				document.getElementsByClassName("ii")[0].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[1].style.transform="scale(1.1)";
+				document.getElementsByClassName("ii")[2].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[3].style.transform="scale(1)";
+			}
+			else if(window.scrollY>=1700 && window.scrollY<=2200){
+				document.getElementsByClassName("ii")[0].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[1].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[2].style.transform="scale(1.1)";
+				document.getElementsByClassName("ii")[3].style.transform="scale(1)";
+			}
+			else if(window.scrollY>=2200 && window.scrollY<=2700){
+				document.getElementsByClassName("ii")[0].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[1].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[2].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[3].style.transform="scale(1.1)";
+			}
+			else if(window.scrollY>=2700){
+				document.getElementsByClassName("ii")[0].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[1].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[2].style.transform="scale(1)";
+				document.getElementsByClassName("ii")[3].style.transform="scale(1)";
+			}
 		}
+	},
+	mounted(){
+		this.$nextTick(function () {
+            window.setInterval(() => {
+                this.countDown();
+            },10);
+        })
 	}
 }
 </script>
@@ -47,7 +96,7 @@ export default {
 body{
 	font-family: 'Open Sans', sans-serif;
 	background-color:rgb(245,245,245);
-	height:100%;
+	height:3700px;
 	//background:radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #B7E8EB 100%);
   overflow-x:hidden;
 }
@@ -134,6 +183,14 @@ html {
     50%  { transform: translate(0px, 25px); }
     100%   { transform: translate(-0, -0px); }   
 }
+#FinalImage{
+	position:absolute;
+	width:400px;
+	height:400px;
+	left:30%;
+	top:2050px;
+	
+}
 #Pitch{
 	position:absolute;
 	color:rgb(70,70,70);
@@ -176,6 +233,20 @@ background: radial-gradient(circle farthest-corner at center center, #E00000 0%,
 	left:5%;
 	top:45%;
 	text-align:center;
+}
+
+#FinalPitch{
+	position:absolute;
+	color:rgb(70,70,70);
+	width:30%;
+	height:20%;
+	left:55%;
+	top:2250px;
+	font-size:30px;
+	text-align:left;
+	display:flex;
+	justify-content:center;
+	align-items:center;
 }
 .oceanai{
 	background: #004BE0;

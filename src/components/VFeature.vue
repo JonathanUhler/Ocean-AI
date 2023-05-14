@@ -2,13 +2,13 @@
 	<div v-if="this.sid=='left'" :style="css" id="Feature">
 		<div id="Pitch"><b>{{mp}}</b></div>
 		<div id="SubPitch">{{sp}}</div>
-		<img :src="require(`../assets/${i}`)" />
+		<img class="ii" :src="require(`../assets/${i}`)" />
 		<VButton x="29%" y="79%" c="blue" t="Learn More" s="smallmedium" L="/"></VButton>
 	</div>
 	<div v-else :style="css" id="Feature">
 		<div id="PitchR"><b>{{mp}}</b></div>
 		<div id="SubPitchR">{{sp}}</div>
-		<img id="imgR" :src="require(`../assets/${i}`)" />
+		<img class="ii" id="imgR" :src="require(`../assets/${i}`)" />
 		<VButton x="59%" y="79%" c="blue" t="Learn More" s="smallmedium" L="/"></VButton>
 	</div>
 </template>
@@ -94,7 +94,9 @@ img{
 	filter:saturate(120%);
 	
 }
-
+.ii{
+	transition:0.4s all;
+}
 #PitchR{
 	position:absolute;
 	width:30%;
